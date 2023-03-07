@@ -21,8 +21,6 @@ export default function makeServer({config = null, indexPath = ''} = {})
 
 
     app.use("/api/auth", makeAuthRoutes({makeCallback, authMiddleware}))
-    app.use("/api/admin", makeAdminRoutes({makeCallback, authMiddleware}))
-
 
     
 
