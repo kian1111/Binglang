@@ -2,21 +2,29 @@ import { useState } from "react"
 import { AddLanguage } from "../AddLanguage"
 import { StyledAddWord } from "./style"
 import { useFormik } from "formik"
+import * as yup from 'yup'
 
 
 export const AddWord = () => {
-    const formik = useFormik({
-        initialValues: {
-            wor: "",
-        }
-
-    })
 
     const [selectedLanguage, setSelectedLanguage] = useState('Korean')
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [word, setWord] = useState('')
     const [addLanguage, setAddLanguage] = useState(0)
 
+    const formik = useFormik({
+        initialValues: {
+            wor: ""
+        },
+
+        validationSchema: yup.object({
+            "wor":yup.string().required()
+        }),
+
+        onSubmit: async (values) => {
+            //TODO
+        }
+    })
 
     
 
@@ -38,7 +46,7 @@ export const AddWord = () => {
     }
     return (
         <StyledAddWord>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
 
 
                 <div class="form-group">
