@@ -1,43 +1,50 @@
+import { useFormik } from "formik"
 import { useState } from "react"
 import { StyledAddLanguage } from "./style"
+import * as yup from 'yup'
+
 
 
 export const AddLanguage = () => {
-    const [selectedLanguage, setSelectedLanguage] = useState('Korean')
     const listLanguages = ["English", "French", "Korean", "Japanese"]
-    const [word,setWord] = useState('')
 
-    function handleUserSelection(e) {
-        let current = e.target.options.selectedIndex
-        setSelectedLanguage(e.target.options[current].getAttribute('data-key'))
-    }
+    const formik = useFormik({
+        initialValues: {
+            word: "",
+            selectedLanguage: "Korean"
+        },
+
+        validationSchema: yup.object({
+            word: yup.string().max(25, "max 25 characters").required("required"),
+            wordNative: yup.string().max(25, "max 25 characters").required("required")
+        }),
+
+        onSubmit: async () => {
+
+
+        }
+    })
 
     return (
         <StyledAddLanguage>
-        <select value={selectedLanguage} onChange={(e) => handleUserSelection(e)}>
-                    <option value=""></option>
-                    {listLanguages.map((language, index) => (
-                        <option key={index} data-key={language} value={language}>{language}</option>
-                    ))}
-                </select>
-                <text> :</text>
-                <input
-                    className="input"
-                    type="text"
-                    value={word}
-                    onChange={e => setWord(e.target.value)}
-                    placeholder=" "
-                />
-                <button
-                type="submit"
-                name="delete"
-                onClick={(event) => {
-
-                }
-                }
-                >
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+            <select value={formik.values.selectedLanguage} onChange={formik.handleChange}>
+                <option value=""></option>
+                {listLanguages.map((language, index) => (
+                    <option key={index} data-key={language} value={language}>{language}</option>
+                ))}
+            </select>
+            <text> :</text>
+            <input
+                className="input"
+                type="text"
+                name="word"
+                value={formik.values.word}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder=" "
+            />
+            
+            {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
         </StyledAddLanguage>
     )
 }

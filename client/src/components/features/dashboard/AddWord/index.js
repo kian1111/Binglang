@@ -7,43 +7,51 @@ import * as yup from 'yup'
 
 export const AddWord = () => {
 
-    const [selectedLanguage, setSelectedLanguage] = useState('Korean')
     const listLanguages = ["English", "French", "Korean", "Japanese"]
-    const [word, setWord] = useState('')
     const [addLanguage, setAddLanguage] = useState(0)
+    const [buttonClicked, setButtonClicked] = useState("")
+    const [addLanguageComponents, setAddLanguageComponents] = useState([]);
+
+
 
     const formik = useFormik({
         initialValues: {
-            wor: ""
+            word: "",
+            selectedLanguage: "Korean"
         },
 
         validationSchema: yup.object({
-            "wor":yup.string().required()
+            word: yup.string().max(25, "max 25 characters").required("required"),
+            wordNative: yup.string().max(25, "max 25 characters").required("required")
         }),
 
-        onSubmit: async (values) => {
-            //TODO
+        onSubmit: async (name) => {
+            if (buttonClicked === "addLanguage") {
+                setAddLanguage(addLanguage + 1)
+            }
+
+
         }
     })
 
+    const handleDelete = (index) => {
+        const newComponents = [...addLanguageComponents];
+        newComponents.splice(index, 1);
+        setAddLanguageComponents(newComponents)
+    };
+
+
+    for (let i = 0; i < addLanguage; i++) {
+        addLanguageComponents.push(<><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} /><button
+            type="submit"
+            onClick={() => {handleDelete(i)
+            setButtonClicked("delete")
+            console.log("clicked")}}>X</button>
+        </>
+        );
+    }
     
 
-    const handleSubmit = async event => {
-        event.preventDefault()
-        setAddLanguage(addLanguage + 1)
-
-    }
-
-    const addLanguageComponents = [];
-    for (let i = 0; i < addLanguage; i++) {
-        addLanguageComponents.push(<AddLanguage key={i} />);
-    }
-
-    function handleUserSelection(e) {
-        let current = e.target.options.selectedIndex
-        setSelectedLanguage(e.target.options[current].getAttribute('data-key'))
-
-    }
     return (
         <StyledAddWord>
             <form onSubmit={formik.handleSubmit}>
@@ -56,13 +64,17 @@ export const AddWord = () => {
                     <input
                         id="inputfield"
                         className="input"
+                        name="word"
                         type="text"
-                        value={word}
-                        onChange={e => setWord(e.target.value)}
+                        value={formik.values.word}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         placeholder=" "
                     />
                 </div>
-                <select value={selectedLanguage} onChange={(e) => handleUserSelection(e)}>
+                {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
+
+                <select name="selectedLanguage" value={formik.values.selectedLanguage} onChange={formik.handleChange}>
                     <option value=""></option>
                     {listLanguages.map((language, index) => (
                         <option key={index} data-key={language} value={language}>{language}</option>
@@ -72,10 +84,13 @@ export const AddWord = () => {
                 <input
                     className="input"
                     type="text"
-                    value={word}
-                    onChange={e => setWord(e.target.value)}
+                    name="wordNative"
+                    value={formik.values.wordNative}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder=" "
                 />
+                {formik.touched.wordNative && formik.errors.wordNative ? <p className="error">{formik.errors.wordNative}</p> : null}
                 {addLanguageComponents}
 
                 <p>
@@ -83,11 +98,8 @@ export const AddWord = () => {
                         className="submit-button"
                         type="submit"
                         name="AddLanguage"
-                        onClick={(event) => {
-
-                        }
-                        }
-
+                        value="addLanguage"
+                        onClick={e => setButtonClicked(e.target.value)}
                     >
                         Add language
                     </button>

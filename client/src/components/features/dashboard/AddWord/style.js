@@ -4,13 +4,18 @@ export const StyledAddWord = styled.div`
   .form-group {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
   }
   .form-group label {
     width: 70px; /* adjust as necessary */
-    margin-right: 0px;
+    margin-right: 10px;
   }
   .form-group input {
     width: 120px;
+    margin-right: 10px;
+  }
+  .form-group p{
+    margin-top: 10px;
   }
 .divhead{
   background-color: #33D7FF ;
@@ -32,6 +37,12 @@ export const StyledAddWord = styled.div`
   padding: 2px;
 }
 
+.label-item
+{
+  width: 20px;
+  height: 20px;
+
+}
 
   
   .input {
@@ -47,9 +58,9 @@ export const StyledAddWord = styled.div`
   button {
     background-color: blue;
     color: white;
-    padding: 5px 5px;
+    padding: 10px 10px;
     border-radius: 5px;
-    margin-top: 0px;
+    margin-top: 5px;
     cursor: pointer;
   }
   
@@ -78,5 +89,10 @@ export const StyledAddWord = styled.div`
     text-align: center;
 }
 
+.error{
+  color: red;
+  font-size: 8px;
+
+}
 
 `
