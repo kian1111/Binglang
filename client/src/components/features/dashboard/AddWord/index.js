@@ -26,13 +26,20 @@ export const AddWord = () => {
         }),
 
         onSubmit: async (name) => {
-            if (buttonClicked === "addLanguage") {
-                setAddLanguage(addLanguage + 1)
-            }
+
 
 
         }
     })
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        console.log(buttonClicked)
+        if (buttonClicked === "addLanguage") {
+            setAddLanguage(addLanguage + 1)
+        }
+    }
+
 
     const handleDelete = (index) => {
         const newComponents = [...addLanguageComponents];
@@ -44,13 +51,15 @@ export const AddWord = () => {
     for (let i = 0; i < addLanguage; i++) {
         addLanguageComponents.push(<><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} /><button
             type="submit"
-            onClick={() => {handleDelete(i)
-            setButtonClicked("delete")
-            console.log("clicked")}}>X</button>
+            onClick={() => {
+                handleDelete(i)
+                setButtonClicked("delete")
+                console.log("clicked")
+            }}>X</button>
         </>
         );
     }
-    
+
 
     return (
         <StyledAddWord>
@@ -91,6 +100,9 @@ export const AddWord = () => {
                     placeholder=" "
                 />
                 {formik.touched.wordNative && formik.errors.wordNative ? <p className="error">{formik.errors.wordNative}</p> : null}
+            </form>
+
+            <form onSubmit={handleSubmit}>
                 {addLanguageComponents}
 
                 <p>
