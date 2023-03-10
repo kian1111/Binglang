@@ -6,7 +6,7 @@ import { AddLanguage } from "../AddLanguage"
 
 
 
-export const UpdateWord = () => {
+export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [addLanguage, setAddLanguage] = useState(0)
     const [addLanguageComponents, setAddLanguageComponents] = useState([]);
@@ -14,8 +14,8 @@ export const UpdateWord = () => {
 
     const formik = useFormik({
         initialValues: {
-            word: "",
-            selectedLanguage: "Korean"
+            word: word || "",
+            selectedLanguage: selectedLanguage || "Korean"
         },
 
         validationSchema: yup.object({
@@ -35,11 +35,11 @@ export const UpdateWord = () => {
         setAddLanguage(addLanguage + 1)
         for (let i = 0; i < addLanguage; i++) {
             setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} />
-            <button
-                type="submit"
-                onClick={() => {
-                    handleDelete(i)
-                }}>X</button>
+                <button
+                    type="submit"
+                    onClick={() => {
+                        handleDelete(i)
+                    }}>X</button>
             </>
             ]);
         }
@@ -67,6 +67,7 @@ export const UpdateWord = () => {
                         className="input"
                         name="word"
                         type="text"
+                        defaultValue={word || ""}
                         value={formik.values.word}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -75,7 +76,8 @@ export const UpdateWord = () => {
                 </div>
                 {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
 
-                <select name="selectedLanguage" value={formik.values.selectedLanguage} onChange={formik.handleChange}>
+                <select name="selectedLanguage" defaultValue={selectedLanguage || ""}
+                    value={formik.values.selectedLanguage} onChange={formik.handleChange}>
                     <option value=""></option>
                     {listLanguages.map((language, index) => (
                         <option key={index} data-key={language} value={language}>{language}</option>

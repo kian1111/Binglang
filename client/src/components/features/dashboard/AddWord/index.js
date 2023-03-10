@@ -5,7 +5,7 @@ import { useFormik } from "formik"
 import * as yup from 'yup'
 
 
-export const AddWord = () => {
+export const AddWord = ({onCancel}) => {
 
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [addLanguage, setAddLanguage] = useState(0)
@@ -33,16 +33,19 @@ export const AddWord = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        
+    }
+
+    const onLanguageClick = () => {
         setAddLanguage(addLanguage + 1)
         for (let i = 0; i < addLanguage; i++) {
-            setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} /><button
-                type="submit"
-                onClick={() => {
-                    handleDelete(i)
-                }}>X</button>
+            setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} 
+            onDelete={() => {handleDelete(i)}}/>
+            
             </>
             ]);
         }
+
     }
 
 
@@ -51,7 +54,7 @@ export const AddWord = () => {
         newComponents.splice(index, 1);
         setAddLanguageComponents(newComponents)
         setAddLanguage(addLanguage - 1)
-    };
+    }
     return (
         <StyledAddWord>
             <form onSubmit={formik.handleSubmit}>
@@ -99,9 +102,10 @@ export const AddWord = () => {
                 <p>
                     <button background-color="#4CAF50"
                         className="submit-button"
-                        type="submit"
+                        type="button"
                         name="AddLanguage"
                         value="addLanguage"
+                        onClick={onLanguageClick}
                         
                     >
                         Add language
@@ -120,6 +124,12 @@ export const AddWord = () => {
                     >
                         Submit
                     </button>
+                    <button
+                            type="button"
+                            onClick={onCancel}
+                        >
+                            Cancel
+                        </button>
                 </p>
             </form>
         </StyledAddWord>

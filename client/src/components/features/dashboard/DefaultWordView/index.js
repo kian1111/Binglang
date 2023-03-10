@@ -11,18 +11,15 @@ export const DefaultWordView = () => {
         <StyledDefaultWordView>
             {!displayEdit &&
             <div>
-            <label>
-                English:
-            </label>
-            
-            <label> 
-                words.targetLanguage 
-                </label>
             
             <label>
-                Korean:
+                English: words.targetLanguage 
             </label>
-            <label> words.NativeLanguage </label>
+                
+            
+            <label>
+                Korean: words.nativeLanguage
+            </label>
         
             <button
                 type="submit"
@@ -34,7 +31,7 @@ export const DefaultWordView = () => {
             
             </div> 
     }
-    {displayEdit && <><UpdateWord/>
+    {displayEdit && <><UpdateWord selectedLanguage={"English"} word={"Papillon"}/>
     <button
      type="submit"
      onClick={() => {

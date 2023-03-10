@@ -30,15 +30,8 @@ export const DailyWords = () => {
                         <i class="fa-solid fa-plus fa-3x"></i>
                     </button>}
 
-                    {displayAdd && <><AddWord />
-                        <button
-                            type="submit"
-                            onClick={() => {
-                                setDisplayAdd(false)
-                            }}
-                        >
-                            Cancel
-                        </button>
+                    {displayAdd && <><AddWord onCancel={() => {setDisplayAdd(false)}} />
+                        
                     </>}
                 </div>
 

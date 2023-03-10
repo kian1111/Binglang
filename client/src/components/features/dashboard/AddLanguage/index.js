@@ -5,7 +5,7 @@ import * as yup from 'yup'
 
 
 
-export const AddLanguage = () => {
+export const AddLanguage = ({onDelete}) => {
     const listLanguages = ["English", "French", "Korean", "Japanese"]
 
     
@@ -42,9 +42,11 @@ export const AddLanguage = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder=" "
-            />
-            
+            /> 
             {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
+            <button
+                type="button"
+                onClick={onDelete}>X</button>
         </StyledAddLanguage>
     )
 }
