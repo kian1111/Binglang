@@ -17,7 +17,7 @@ export const DashBoard = () => {
                 </header>
             </div>
             <DailyWords></DailyWords>
-            <AddWord/>
+            
         </StyledDashboard>
         
 

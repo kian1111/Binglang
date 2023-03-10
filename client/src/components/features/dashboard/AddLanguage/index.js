@@ -8,6 +8,7 @@ import * as yup from 'yup'
 export const AddLanguage = () => {
     const listLanguages = ["English", "French", "Korean", "Japanese"]
 
+    
     const formik = useFormik({
         initialValues: {
             word: "",
@@ -15,8 +16,7 @@ export const AddLanguage = () => {
         },
 
         validationSchema: yup.object({
-            word: yup.string().max(25, "max 25 characters").required("required"),
-            wordNative: yup.string().max(25, "max 25 characters").required("required")
+            word: yup.string().max(25, "max 25 characters").required("required")
         }),
 
         onSubmit: async () => {
@@ -27,7 +27,7 @@ export const AddLanguage = () => {
 
     return (
         <StyledAddLanguage>
-            <select value={formik.values.selectedLanguage} onChange={formik.handleChange}>
+            <select name="selectedLanguage" value={formik.values.selectedLanguage}  onChange={formik.handleChange}>
                 <option value=""></option>
                 {listLanguages.map((language, index) => (
                     <option key={index} data-key={language} value={language}>{language}</option>

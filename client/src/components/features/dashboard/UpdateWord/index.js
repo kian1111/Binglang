@@ -1,16 +1,15 @@
-import { useState } from "react"
-import { AddLanguage } from "../AddLanguage"
-import { StyledAddWord } from "./style"
 import { useFormik } from "formik"
+import { useState } from "react"
+import { StyledUpdateWord } from "./style"
 import * as yup from 'yup'
+import { AddLanguage } from "../AddLanguage"
 
 
-export const AddWord = () => {
 
+export const UpdateWord = () => {
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [addLanguage, setAddLanguage] = useState(0)
     const [addLanguageComponents, setAddLanguageComponents] = useState([]);
-
 
 
     const formik = useFormik({
@@ -35,7 +34,8 @@ export const AddWord = () => {
         e.preventDefault();
         setAddLanguage(addLanguage + 1)
         for (let i = 0; i < addLanguage; i++) {
-            setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} /><button
+            setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} />
+            <button
                 type="submit"
                 onClick={() => {
                     handleDelete(i)
@@ -51,10 +51,11 @@ export const AddWord = () => {
         newComponents.splice(index, 1);
         setAddLanguageComponents(newComponents)
         setAddLanguage(addLanguage - 1)
-    };
+    }
+
     return (
-        <StyledAddWord>
-            <form onSubmit={formik.handleSubmit}>
+        <StyledUpdateWord>
+            <form >
 
 
                 <div class="form-group">
@@ -69,7 +70,7 @@ export const AddWord = () => {
                         value={formik.values.word}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        placeholder=" "
+                        placeholder={formik.values.word}
                     />
                 </div>
                 {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
@@ -88,7 +89,7 @@ export const AddWord = () => {
                     value={formik.values.wordNative}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder=" "
+                    placeholder={formik.values.wordNative}
                 />
                 {formik.touched.wordNative && formik.errors.wordNative ? <p className="error">{formik.errors.wordNative}</p> : null}
             </form>
@@ -102,7 +103,7 @@ export const AddWord = () => {
                         type="submit"
                         name="AddLanguage"
                         value="addLanguage"
-                        
+
                     >
                         Add language
                     </button>
@@ -122,7 +123,6 @@ export const AddWord = () => {
                     </button>
                 </p>
             </form>
-        </StyledAddWord>
-
+        </StyledUpdateWord>
     )
 }
