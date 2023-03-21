@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react"
-import { AddLanguage } from "../AddLanguage"
-import { StyledAddWord } from "./style"
 import { useFormik } from "formik"
+import { useState } from "react"
+import { StyledUpdateWord } from "./style"
 import * as yup from 'yup'
-import { addWord } from "../../../../pages/DashBoard/action"
-import { DefaultWordView } from "../DefaultWordView"
+import { AddLanguage } from "../AddLanguage"
+import { putWord } from "../../../../../pages/Teacher/TeacherDashboard/action"
 
 
-export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
 
+
+export const UpdateWord = ({ word = null, selectedLanguage = null, wordNative = null, onCancel, wordId, wordItems, updateWordItems }) => {
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [addLanguage, setAddLanguage] = useState(0)
     const [addLanguageComponents, setAddLanguageComponents] = useState([]);
-    const [words, setWords] = useState (wordItems || {})
-
+    const [id, setId] = useState('')
 
 
     const formik = useFormik({
         initialValues: {
-            word: "",
-            selectedLanguage: "Korean"
+            wordTarget: word || "",
+            selectedLanguage: selectedLanguage || "Korean",
+            wordNative : wordNative || ""
         },
 
         validationSchema: yup.object({
-            word: yup.string().max(25, "max 25 characters").required("required"),
+            wordTarget: yup.string().max(25, "max 25 characters").required("required"),
             wordNative: yup.string().max(25, "max 25 characters").required("required")
         }),
 
@@ -33,21 +33,10 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
 
         }
     })
-    
 
     const handleSubmit = async e => {
         e.preventDefault();
-        try {
-        let newWord = {targetLanguage : formik.values.word, nativeLanguage : formik.values.wordNative, date : dateItem}
-        let data = await addWord(newWord)
         
-        setWordItems([...words, { targetLanguage : formik.values.word, nativeLanguage : formik.values.wordNative, date : dateItem, _id: data._id }])
-        onCancel()
-        }
-        catch (err) {
-            console.log(err);
-            alert(err.message);
-        }
     }
 
     const onLanguageClick = () => {
@@ -70,19 +59,35 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
         setAddLanguage(addLanguage - 1)
     }
 
-    useEffect(() => {
-        const load = async () => {
-          
-        };
-       
-        load();
-      },[words] )
+    const onUpdateClick = async () => {
+        
+        try {
+            let newWords = [...wordItems]
+
+            await putWord({ _id : wordId, targetLanguage : formik.values.wordTarget, nativeLanguage : formik.values.wordNative })
+
+            for (let i = 0; i < wordItems   .length; i++)
+                if (wordItems[i]._id === wordId) {
+                    newWords[i].targetLanguage = formik.values.wordTarget
+                    newWords[i].nativeLanguage = formik.values.wordNative
+                    updateWordItems(newWords)
+                    onCancel()
+                }
+
+        }
+        catch (err) {
+            console.log(err);
+            alert(err.message);
+        }
+
+    }
+
     return (
-        <StyledAddWord>
+        <StyledUpdateWord>
+             <div className="div-blue">
+            <form >
 
-            <form onSubmit={formik.handleSubmit}>
-
-
+           
                 <div class="form-group">
                     <label for="inputfield">
                         English :
@@ -90,18 +95,19 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
                     <input
                         id="inputfield"
                         className="input"
-                        name="word"
+                        name="wordTarget"
                         type="text"
-                        value={formik.values.word}
+                        defaultValue={word || ""}
+                        value={formik.values.wordTarget}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        placeholder=" "
-                        width="200px"
+                        placeholder={formik.values.wordTarget}
                     />
                 </div>
-                {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
+                {formik.touched.wordTarget && formik.errors.wordTarget ? <p className="error">{formik.errors.wordTarget}</p> : null}
 
-                <select name="selectedLanguage" value={formik.values.selectedLanguage} onChange={formik.handleChange}>
+                <select name="selectedLanguage" defaultValue={selectedLanguage || ""}
+                    value={formik.values.selectedLanguage} onChange={formik.handleChange}>
                     <option value=""></option>
                     {listLanguages.map((language, index) => (
                         <option key={index} data-key={language} value={language}>{language}</option>
@@ -112,10 +118,11 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
                     className="input"
                     type="text"
                     name="wordNative"
+                    defaultValue = {wordNative || ""}
                     value={formik.values.wordNative}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder=" "
+                    placeholder={formik.values.wordNative}
                 />
                 {formik.touched.wordNative && formik.errors.wordNative ? <p className="error">{formik.errors.wordNative}</p> : null}
             </form>
@@ -126,11 +133,9 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
                 <p>
                     <button background-color="#4CAF50"
                         className="submit-button"
-                        type="button"
                         name="AddLanguage"
                         value="addLanguage"
                         onClick={onLanguageClick}
-                        
                     >
                         Add language
                     </button>
@@ -140,20 +145,25 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
                         className="submit-button"
                         type="submit"
                         name="AddWord"
-                        
+                        onClick={() => {
+                            onUpdateClick()
+                        }
+                        }
 
                     >
                         Submit
                     </button>
                     <button
-                            type="button"
-                            onClick={onCancel}
-                        >
-                            Cancel
-                        </button>
+                        type="submit"
+                        onClick={onCancel}
+                    >
+                        Cancel
+                    </button>
                 </p>
             </form>
-        </StyledAddWord>
+            </div>
 
+            
+        </StyledUpdateWord>
     )
 }

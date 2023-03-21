@@ -3,23 +3,27 @@ import { useState } from "react"
 import { StyledUpdateWord } from "./style"
 import * as yup from 'yup'
 import { AddLanguage } from "../AddLanguage"
+import { putWord } from "../../../../pages/DashBoard/action"
 
 
 
-export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
+export const UpdateWord = ({ word = null, selectedLanguage = null, wordNative = null, onCancel, wordId, wordItems }) => {
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [addLanguage, setAddLanguage] = useState(0)
     const [addLanguageComponents, setAddLanguageComponents] = useState([]);
+    const [words, setWords] = useState(wordItems || null)
+    const [id, setId] = useState('')
 
 
     const formik = useFormik({
         initialValues: {
-            word: word || "",
-            selectedLanguage: selectedLanguage || "Korean"
+            wordTarget: word || "",
+            selectedLanguage: selectedLanguage || "Korean",
+            wordNative : wordNative || ""
         },
 
         validationSchema: yup.object({
-            word: yup.string().max(25, "max 25 characters").required("required"),
+            wordTarget: yup.string().max(25, "max 25 characters").required("required"),
             wordNative: yup.string().max(25, "max 25 characters").required("required")
         }),
 
@@ -32,17 +36,19 @@ export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        
+    }
+
+    const onLanguageClick = () => {
         setAddLanguage(addLanguage + 1)
         for (let i = 0; i < addLanguage; i++) {
-            setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} />
-                <button
-                    type="submit"
-                    onClick={() => {
-                        handleDelete(i)
-                    }}>X</button>
+            setAddLanguageComponents([...addLanguageComponents, <><AddLanguage key={i} selectedLanguage={formik.values.selectedLanguage} 
+            onDelete={() => {handleDelete(i)}}/>
+            
             </>
             ]);
         }
+
     }
 
 
@@ -53,11 +59,35 @@ export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
         setAddLanguage(addLanguage - 1)
     }
 
+    const onUpdateClick = async () => {
+        
+        try {
+            let newWords = [...words]
+            console.log(wordId)
+            await putWord({ _id : wordId, targetLanguage : formik.values.wordTarget, nativeLanguage : formik.values.wordNative })
+
+            for (let i = 0; i < words.length; i++)
+                if (words[i]._id === wordId) {
+                    newWords[i].targetLanguage = formik.values.wordTarget
+                    newWords[i].nativeLanguage = formik.values.wordNative
+                    setWords(newWords)
+                    onCancel()
+                }
+
+        }
+        catch (err) {
+            console.log(err);
+            alert(err.message);
+        }
+
+    }
+
     return (
         <StyledUpdateWord>
+             <div className="div-blue">
             <form >
 
-
+           
                 <div class="form-group">
                     <label for="inputfield">
                         English :
@@ -65,16 +95,16 @@ export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
                     <input
                         id="inputfield"
                         className="input"
-                        name="word"
+                        name="wordTarget"
                         type="text"
                         defaultValue={word || ""}
-                        value={formik.values.word}
+                        value={formik.values.wordTarget}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        placeholder={formik.values.word}
+                        placeholder={formik.values.wordTarget}
                     />
                 </div>
-                {formik.touched.word && formik.errors.word ? <p className="error">{formik.errors.word}</p> : null}
+                {formik.touched.wordTarget && formik.errors.wordTarget ? <p className="error">{formik.errors.wordTarget}</p> : null}
 
                 <select name="selectedLanguage" defaultValue={selectedLanguage || ""}
                     value={formik.values.selectedLanguage} onChange={formik.handleChange}>
@@ -88,6 +118,7 @@ export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
                     className="input"
                     type="text"
                     name="wordNative"
+                    defaultValue = {wordNative || ""}
                     value={formik.values.wordNative}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -102,10 +133,9 @@ export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
                 <p>
                     <button background-color="#4CAF50"
                         className="submit-button"
-                        type="submit"
                         name="AddLanguage"
                         value="addLanguage"
-
+                        onClick={onLanguageClick}
                     >
                         Add language
                     </button>
@@ -115,16 +145,25 @@ export const UpdateWord = ({ word = null, selectedLanguage = null }) => {
                         className="submit-button"
                         type="submit"
                         name="AddWord"
-                        onClick={(event) => {
-
+                        onClick={() => {
+                            onUpdateClick()
                         }
                         }
 
                     >
                         Submit
                     </button>
+                    <button
+                        type="submit"
+                        onClick={onCancel}
+                    >
+                        Cancel
+                    </button>
                 </p>
             </form>
+            </div>
+
+            
         </StyledUpdateWord>
     )
 }

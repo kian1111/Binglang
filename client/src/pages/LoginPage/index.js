@@ -20,7 +20,6 @@ export const LoginPage = () =>{
   
     try{
       let data = await dispatch(authUser({username,password}));
-      console.log("allo",data);
     }
     catch(err){
       console.log(err);
@@ -29,8 +28,11 @@ export const LoginPage = () =>{
   };
   
   if(auth.is_authenticated){
-    if(auth.account_type === "user"){
+    if(auth.account_type === "student"){
       return <Navigate to="/dashboard"/>
+    }
+    if(auth.account_type === "teacher"){
+      return <Navigate to="/teacher/dashboard"/>
     }
     if(auth.account_type === "admin"){
       return <Navigate to="/admin"/>

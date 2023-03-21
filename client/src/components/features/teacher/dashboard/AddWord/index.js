@@ -3,16 +3,14 @@ import { AddLanguage } from "../AddLanguage"
 import { StyledAddWord } from "./style"
 import { useFormik } from "formik"
 import * as yup from 'yup'
-import { addWord } from "../../../../pages/DashBoard/action"
-import { DefaultWordView } from "../DefaultWordView"
+import { addWord } from "../../../../../pages/Teacher/TeacherDashboard/action.js"
 
 
-export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
+export const AddWord = ({onCancel, dateItem, wordItems, updateWordItems, studentId}) => {
 
     const listLanguages = ["English", "French", "Korean", "Japanese"]
     const [addLanguage, setAddLanguage] = useState(0)
     const [addLanguageComponents, setAddLanguageComponents] = useState([]);
-    const [words, setWords] = useState (wordItems || {})
 
 
 
@@ -38,10 +36,10 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-        let newWord = {targetLanguage : formik.values.word, nativeLanguage : formik.values.wordNative, date : dateItem}
+        let newWord = {_id : studentId, targetLanguage : formik.values.word, nativeLanguage : formik.values.wordNative, date : dateItem}
         let data = await addWord(newWord)
         
-        setWordItems([...words, { targetLanguage : formik.values.word, nativeLanguage : formik.values.wordNative, date : dateItem, _id: data._id }])
+        updateWordItems([...wordItems, { targetLanguage : formik.values.word, nativeLanguage : formik.values.wordNative, date : dateItem, _id: data._id }])
         onCancel()
         }
         catch (err) {
@@ -70,13 +68,6 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
         setAddLanguage(addLanguage - 1)
     }
 
-    useEffect(() => {
-        const load = async () => {
-          
-        };
-       
-        load();
-      },[words] )
     return (
         <StyledAddWord>
 

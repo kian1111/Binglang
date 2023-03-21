@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
-import { deleteWord, formatDate } from "../../../../pages/DashBoard/action"
+import { deleteWord, formatDate } from "../../../../../pages/Teacher/TeacherDashboard/action.js"
 import { AddWord } from "../AddWord"
 import { UpdateWord } from "../UpdateWord"
 import { StyledDefaultWordView } from "./style"
 
 
-export const DefaultWordView = ({ wordItems, dateItem, setWordCollection }) => {
-    const [words, setWords] = useState(wordItems || null)
+export const DefaultWordView = ({ wordItems, dateItem, updateWordItems, studentId }) => {
     const [displayAdd, setDisplayAdd] = useState(false)
     const [currentlyEditing, setCurrentlyEditing] = useState(null)
     const [_id, setId] = useState('')
@@ -16,16 +15,15 @@ export const DefaultWordView = ({ wordItems, dateItem, setWordCollection }) => {
     }
 
     const onDeleteClick = async (index) => {
-        let newId = words[index]._id
-        setId(newId)
-        console.log("function Id", newId)
+        let newId = wordItems[index]._id
         try {
-            let newWords = [...words]
-            for (let i = 0; i < words.length; i++)
-                if (words[i]._id === newId) {
+            let newWords = [...wordItems]
+            for (let i = 0; i < wordItems.length; i++)
+                if (wordItems[i]._id === newId) {
                     newWords.splice(i, 1)
-                    setWords(newWords)
+                    updateWordItems(newWords)
                 }
+            setId(newId)
             await deleteWord( {_id:newId})
         }
         catch (err) {
@@ -45,7 +43,7 @@ export const DefaultWordView = ({ wordItems, dateItem, setWordCollection }) => {
                 <div align="center" ><header background-color="#4CAF50">{dateItem} </header></div>
                 <div className="grid-container" >
 
-                    {words.map((item, index) => (
+                    {wordItems.map((item, index) => (
                         <div key={item._id}>
                             {currentlyEditing != item._id &&
                                 <div className="grid-item">
@@ -79,7 +77,10 @@ export const DefaultWordView = ({ wordItems, dateItem, setWordCollection }) => {
 
 
 
-                            {currentlyEditing === item._id && <><UpdateWord wordItems={words} wordId={words[index]._id} setWordItems={setWords} onCancel={() => { onEditClick(null) }} selectedLanguage={"Korean"} word={item.targetLanguage} wordNative={item.nativeLanguage} />
+                            {currentlyEditing === item._id && <><UpdateWord wordItems={wordItems} wordId={wordItems[index]._id} 
+                             onCancel={() => { onEditClick(null) }} selectedLanguage={"Korean"} 
+                            word={item.targetLanguage} wordNative={item.nativeLanguage}  studentId = {studentId}
+                            updateWordItems={updateWordItems}/>
 
 
                             </>
@@ -98,7 +99,8 @@ export const DefaultWordView = ({ wordItems, dateItem, setWordCollection }) => {
                                 <i class="fa-solid fa-plus fa-3x"></i>
                             </button>}
 
-                            {displayAdd && <><AddWord dateItem={dateItem} wordItems={words} setWordItems={setWords} onCancel={() => { setDisplayAdd(false) }} />
+                            {displayAdd && <><AddWord dateItem={dateItem} wordItems={wordItems} updateWordItems={updateWordItems} 
+                            onCancel={() => { setDisplayAdd(false) }} studentId = {studentId} />
 
                             </>}
                         </div>

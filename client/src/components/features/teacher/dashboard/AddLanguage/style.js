@@ -1,31 +1,24 @@
-
 import styled from 'styled-components'
 
-export const StyledDashboard = styled.div`
-
-.div-right-center {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+export const StyledAddLanguage = styled.div`
+  .form-group {
+    display: flex;
+    align-items: center;
+  }
+  .form-group label {
+    width: 70px; /* adjust as necessary */
+    margin-right: 0px;
+  }
+  .form-group input {
+    width: 120px;
+  }
 .divhead{
   background-color: #33D7FF ;
+  text-align: center;
   border: 3px solid green;
   font-size: 40px;
-  display: flex;
-  justify-content: space-between;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-td {
-  border: 1px solid black;
-  text-align: center;
-  padding: 8px;
-}
 .grid-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -38,29 +31,17 @@ td {
   text-align: center;
   padding: 2px;
 }
-.login-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-    width: 150px;
-    padding: 1px;
-  }
-  
-  label {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 5px;
-  }
+
+
   
   .input {
     padding: 1px;
     margin-bottom: 2px;
     border-radius: 3px;
     border: 1px solid #ccc;
-    height:40px;
-    font-size:14pt;
+    height:20px;
+    font-size:10pt;
+    width : 120px
   }
   
   button {
@@ -68,7 +49,7 @@ td {
     color: white;
     padding: 5px 5px;
     border-radius: 5px;
-    margin-top: 2px;
+    margin-top: 0px;
     cursor: pointer;
   }
   
@@ -84,4 +65,18 @@ td {
   border-bottom: 0px solid #fff;
   outline: none;
 }
+
+.center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  background-color: #33D7FF;
+  padding: 10px;
+  
+}
+.table{
+    text-align: center;
+}
+
+
 `

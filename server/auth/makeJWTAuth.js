@@ -8,7 +8,7 @@ export default function makeJWTAuth(config)
         //validate input
         if(!_id){throw new Error('_id is required when creating an auth token')}
         if(!account_type){throw new Error('account_type is required when creating an auth token')}
-        if( (['user', 'admin']).indexOf(account_type) < 0 ){throw new Error('account_type is invalid for authentication')}
+        if( (['user','student','teacher', 'admin']).indexOf(account_type) < 0 ){throw new Error('account_type is invalid for authentication')}
 
         //create token
         let token = jwt.sign({_id, account_type}, config.getAuthSecret(), {expiresIn: config.getSessionExpireTime()});

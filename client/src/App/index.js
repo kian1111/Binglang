@@ -1,6 +1,8 @@
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/LoginPage"
 import { DashBoard } from "../pages/DashBoard"
+import { TeacherDashBoard } from "../pages/Teacher/TeacherDashboard"
+
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from "./PrivateRoute";
@@ -33,7 +35,8 @@ export const App = () => {
             <Routes>
                 <Route exact path="/" element={<HomePage/>}/>
                 <Route exact path="/login" element={<LoginPage/>}/>
-                <Route exact path="/dashboard" element={<PrivateRoute account_type="user"><DashBoard/></PrivateRoute>}/>
+                <Route exact path="/dashboard" element={<PrivateRoute account_type="student"><DashBoard/></PrivateRoute>}/>
+                <Route exact path="/teacher/dashboard" element={<PrivateRoute account_type="teacher"><TeacherDashBoard/></PrivateRoute>}/>
                 <Route exact path="/admin" element={<PrivateRoute account_type="admin"><Admin/></PrivateRoute>}/>
 
 
