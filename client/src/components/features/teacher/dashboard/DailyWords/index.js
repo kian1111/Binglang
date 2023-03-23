@@ -8,7 +8,7 @@ import { StyledDailyWords } from "./style"
 
 
 
-export const DailyWords = ({initDate, finalDate, setStartDateItem, setEndDateItem, wordItems, setWordItems, studentId}) => {
+export const DailyWords = ({initDate, finalDate, setStartDateItem, setEndDateItem, wordItems, setWordItems, studentId, studentSettings}) => {
 
     const [displayWord, setDisplayWord] = useState("default")
     const [displayAdd, setDisplayAdd] = useState(false)
@@ -19,7 +19,7 @@ export const DailyWords = ({initDate, finalDate, setStartDateItem, setEndDateIte
     const changeWord = (date, newWord) => {
 
         wordItems[date] = newWord
-        
+
         setWordItems(wordItems)
     }
 
@@ -30,7 +30,8 @@ export const DailyWords = ({initDate, finalDate, setStartDateItem, setEndDateIte
                     {displayWord === "default" &&
                     <>
                     {Object.entries(wordItems).map(([date, word])=> <DefaultWordView key={date} wordItems={word} 
-                    updateWordItems={(newWord) => changeWord(date,newWord)} dateItem={date} studentId = {studentId}/>)}
+                    updateWordItems={(newWord) => changeWord(date,newWord)} dateItem={date} studentId = {studentId}
+                    studentSettings={studentSettings}/>)}
                     </>}
             
         </StyledDailyWords>

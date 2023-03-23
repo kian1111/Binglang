@@ -45,14 +45,12 @@ export const StyledAddWord = styled.div`
 }
 
   
-  .input {
-    padding: 1px;
-    margin-bottom: 2px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    height:20px;
-    font-size:10pt;
-    width : 120px
+  input {
+    width:2000    px;
+    vertical-align: top;
+    text-align:left;
+    vertical-align: top;
+    text-align: left;
   }
   
   button {

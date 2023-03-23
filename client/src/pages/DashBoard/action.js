@@ -32,6 +32,15 @@ export const putWord = async ({_id, targetLanguage, nativeLanguage}) => {
     
 }
 
+export const studentSettings = async ({_id}) =>  {
+
+
+    const {data} = await api.get("/settings/", {_id})
+
+
+    return data.studentSettings;
+    
+} 
 
 export function formatDate(date) {
     var d = new Date(date),

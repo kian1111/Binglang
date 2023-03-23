@@ -5,6 +5,7 @@ import { useFormik } from "formik"
 import * as yup from 'yup'
 import { addWord } from "../../../../pages/DashBoard/action"
 import { DefaultWordView } from "../DefaultWordView"
+import { BulkAddWord } from "../../teacher/dashboard/BulkAddWord"
 
 
 export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
@@ -122,7 +123,6 @@ export const AddWord = ({onCancel, dateItem, wordItems, setWordItems}) => {
 
             <form onSubmit={handleSubmit}>
                 {addLanguageComponents}
-
                 <p>
                     <button background-color="#4CAF50"
                         className="submit-button"

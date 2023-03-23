@@ -18,6 +18,14 @@ export const addWord = async ({_id, targetLanguage, nativeLanguage, date, addedL
 
 }
 
+export const addBulkWords = async ({_id},bulkWord) => {
+
+    const {data} = await api.post("/teacher/student/bulk/word/", {_id, bulkWord});
+
+    return data;
+
+}
+
 export const deleteWord = async ({_id}) => {
     
     await api.delete("/word/"+_id);
@@ -41,6 +49,16 @@ export const studentList = async ({_id}) =>  {
     return data.studentList;
     
 }
+
+export const getStudentSettings = async ({_id}) =>  {
+
+
+    const {data} = await api.get(`/settings/?_id=${(_id)}`)
+
+    console.log(data.studentSettings)
+    return data.studentSettings[0];
+    
+} 
 
 
 export function formatDate(date) {

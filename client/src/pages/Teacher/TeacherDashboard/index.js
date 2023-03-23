@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { StyledDashboard } from "./style"
 import { DailyWords } from "../../../components/features/teacher/dashboard/DailyWords"
-import { formatDate, studentList, wordList } from "./action";
+import { formatDate, studentList, wordList, studentSettings, getStudentSettings } from "./action";
 
 
 
@@ -21,6 +21,7 @@ export const TeacherDashBoard = () => {
     const [selectedUser, setSelectedUser] = useState('')
     const [selectedUserId, setSelectedUserId] = useState('');
     const [studentId, setStudentId] = useState('')
+    const [studentSettings, setStudentSettings] = useState('')
 
 
     const changeStudent = () => {
@@ -61,8 +62,11 @@ export const TeacherDashBoard = () => {
         const load = async () => {
           let myStudents = await studentList({_id : auth._id })
           let myWords = await wordList({_id : studentId, startDate , endDate })
+          let myStudentSettings = await getStudentSettings({_id : studentId})
           filterByDay(myWords, startDate, endDate)
           setListStudents(myStudents)
+          setStudentSettings(myStudentSettings)
+          console.log("studentsettings", studentSettings)
         };
 
         load();
@@ -76,7 +80,7 @@ export const TeacherDashBoard = () => {
 
                     <div>Student : {userName}</div>
 
-                    <div>Learning language : English</div>
+                    <div>Learning language : {studentSettings.target_language}</div>
                 </header>
                 <div className="div-right-center">
                     <div>
@@ -106,7 +110,7 @@ export const TeacherDashBoard = () => {
                     </div>
                 </div>
             
-            <DailyWords initDate={startDate} studentId = {studentId} wordItems={words} setWordItems={setWords} finalDate={endDate} setStartDateItem={setStartDate} setEndDateItem={setEndDate}></DailyWords>
+            <DailyWords initDate={startDate} studentId = {studentId} studentSettings={studentSettings} wordItems={words} setWordItems={setWords} finalDate={endDate} setStartDateItem={setStartDate} setEndDateItem={setEndDate}></DailyWords>
 
         </StyledDashboard>
 

@@ -5,7 +5,7 @@ import { UpdateWord } from "../UpdateWord"
 import { StyledDefaultWordView } from "./style"
 
 
-export const DefaultWordView = ({ wordItems, dateItem, updateWordItems, studentId }) => {
+export const DefaultWordView = ({ wordItems, dateItem, updateWordItems, studentId, studentSettings }) => {
     const [displayAdd, setDisplayAdd] = useState(false)
     const [currentlyEditing, setCurrentlyEditing] = useState(null)
     const [_id, setId] = useState('')
@@ -48,13 +48,13 @@ export const DefaultWordView = ({ wordItems, dateItem, updateWordItems, studentI
                             {currentlyEditing != item._id &&
                                 <div className="grid-item">
                                     <label>
-                                        English: {item.targetLanguage}
+                                        {studentSettings.target_language}: {item.targetLanguage}
                                         Date : {formatDate(item.date)}
                                     </label>
 
 
                                     <label>
-                                        Korean: {item.nativeLanguage}
+                                    {studentSettings.native_language}: {item.nativeLanguage}
                                     </label>
                                     <p>
                                         <button
@@ -80,7 +80,7 @@ export const DefaultWordView = ({ wordItems, dateItem, updateWordItems, studentI
                             {currentlyEditing === item._id && <><UpdateWord wordItems={wordItems} wordId={wordItems[index]._id} 
                              onCancel={() => { onEditClick(null) }} selectedLanguage={"Korean"} 
                             word={item.targetLanguage} wordNative={item.nativeLanguage}  studentId = {studentId}
-                            updateWordItems={updateWordItems}/>
+                            updateWordItems={updateWordItems} studentSettings={studentSettings}/>
 
 
                             </>
@@ -100,7 +100,7 @@ export const DefaultWordView = ({ wordItems, dateItem, updateWordItems, studentI
                             </button>}
 
                             {displayAdd && <><AddWord dateItem={dateItem} wordItems={wordItems} updateWordItems={updateWordItems} 
-                            onCancel={() => { setDisplayAdd(false) }} studentId = {studentId} />
+                            onCancel={() => { setDisplayAdd(false) }} studentId = {studentId} studentSettings={studentSettings}/>
 
                             </>}
                         </div>
