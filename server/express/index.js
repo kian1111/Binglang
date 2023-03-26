@@ -7,6 +7,7 @@ import makeAuthRoutes from './routes/auth-routes.js'
 import makeWordRoutes from './routes/word-routes.js'
 import makeTeacherRoutes from './routes/teacher-routes.js'
 import makeSettingsRoutes from './routes/settings-route.js'
+import makeNoteRoutes from './routes/note-routes.js'
 
 import { authManager } from '../auth/index.js'
 
@@ -27,6 +28,8 @@ export default function makeServer({config = null, indexPath = ''} = {})
     app.use("/api/word", makeWordRoutes({makeCallback, authMiddleware}))
     app.use("/api/teacher", makeTeacherRoutes({makeCallback, authMiddleware}))
     app.use("/api/settings", makeSettingsRoutes({makeCallback, authMiddleware}))
+    app.use("/api/note", makeNoteRoutes({makeCallback, authMiddleware}))
+
 
 
 

@@ -98,4 +98,23 @@ export const StyledDefaultWordView = styled.div`
 
 }
 
+
+.notes {
+  position: relative;
+  z-index: 1;
+  width: 200px; /* adjust this to the desired width */
+  height: 200px; /* adjust this to the desired height */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  /* other styles for the item */
+}
+
+.notes:hover,
+.notes:focus {
+  z-index: 2;
+  /* other styles for the item when selected or hovered over */
+}
+
 `

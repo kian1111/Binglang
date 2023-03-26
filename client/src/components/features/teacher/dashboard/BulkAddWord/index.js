@@ -36,7 +36,6 @@ export const BulkAddWord = ({bulkAdd, setBulkAdd}) => {
 
         setDisplayBulk(false)
         setBulkAdd(true)
-        console.log("child Component BulkaddValue", bulkAdd)
     }
 
     const onCancel = () => {

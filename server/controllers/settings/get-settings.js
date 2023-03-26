@@ -4,7 +4,7 @@ export default function makeGetSettings ({fetchSettings})
     {
         try
         {
-            console.log("query_id", httpRequest.query._id)
+            
             let studentSettings = await fetchSettings({_id : httpRequest.query._id});
 
             if (!studentSettings) {

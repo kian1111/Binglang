@@ -39,7 +39,6 @@ export const AddWord = ({ onCancel, dateItem, wordItems, updateWordItems, studen
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log("bulkaddValue", bulkAdd)
         try {
             if (!bulkAdd) {
                 let newWord = { _id: studentId, targetLanguage: formik.values.word, nativeLanguage: formik.values.wordNative, date: dateItem }
@@ -54,30 +53,36 @@ export const AddWord = ({ onCancel, dateItem, wordItems, updateWordItems, studen
 
                 const myTextareaNative = document.getElementById("myTextareaNative");
 
+                let linesTarget = [" "]
 
+                let linesNative = [" "]
                 // Split the textarea content by lines
-                const linesTarget = myTextareaTarget.value.split("\n");
+                if (myTextareaTarget.value) {
+                 linesTarget = myTextareaTarget.value.split("\n");
+                }
+                if (myTextareaNative.value) {
+                 linesNative = myTextareaNative.value.split("\n");                    
+            }
+                
 
-                const linesNative = myTextareaNative.value.split("\n");
+               
 
 
                 // Split each line by words
                 let newWords = []
                 for (let i = 0; i < linesTarget.length; i++) {
-                    newWords.push({ _id: studentId, targetLanguage: linesTarget[i].split(" ")[0] || " ", nativeLanguage: linesNative[i].split(" ")[0] || " ", date: dateItem })
-
-                    console.log("line", linesTarget[i].split(" ")[0])
-
+                    newWords.push({ _id: studentId, targetLanguage: linesTarget[i] ? linesTarget[i].split(" ")[0] : " ", 
+                    nativeLanguage: linesNative[i] ? linesNative[i].split(" ")[0] : " ", date: dateItem })
+                     
                 }
 
                 let data = await addBulkWords({_id : studentId}, newWords)
 
 
-                updateWordItems([...wordItems, {newWords}])
+                updateWordItems([...wordItems, ...newWords])
 
 
                 // Output the array of words
-                console.log("bulk test", wordItems);
                 onCancel()
             }
         }

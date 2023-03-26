@@ -111,6 +111,7 @@ export default function makeUserDb({ makeDb }) {
 
 
         const db = await makeDb();
+        
 
 
         let result = await db.getCollection('words').insert({
@@ -160,6 +161,67 @@ export default function makeUserDb({ makeDb }) {
         return result;
     }
 
+    const findNotes = async ({ _id = null, startDate = null, endDate = null } = {}) => {
+
+        const db = await makeDb();
+
+        const result = await db.getCollection('notes').find({
+            student_id: _id,
+
+            date: {
+                $gte: new Date(startDate),
+                $lte: new Date(endDate)
+            }
+
+        });
+
+
+        return result;
+
+    }
+
+    const addNote = async ({ _id = null, notes = null, date = null } = {}) => {
+
+
+        const db = await makeDb();
+
+
+        let result = await db.getCollection('notes').insert({
+            student_id: _id,
+            notes : notes,
+            date: new Date(date)
+        })
+
+        return result.insertedId;
+
+    }
+
+    const findNotesByDate = async ({ date = null } = {}) => {
+
+        const db = await makeDb();
+
+        const result = await db.getCollection('notes').find({
+            date: new Date(date),
+
+
+        });
+
+        return result;
+
+    }
+
+    const updateNote = async ({ date = null, notes = null } = {}) => {
+        let updateQuery = {}
+        const db = await makeDb();
+
+        updateQuery = { notes}
+
+        let result = await db.getCollection('notes').update({ date : new Date(date) }, { $set: updateQuery })
+
+        return result;
+
+    }
+
 
 
     return Object.freeze({
@@ -172,6 +234,10 @@ export default function makeUserDb({ makeDb }) {
         findStudentWords,
         addStudentWord,
         findSettings,
-        addBulkStudentWord
+        addBulkStudentWord,
+        findNotes,
+        addNote,
+        findNotesByDate,
+        updateNote
     });
 }

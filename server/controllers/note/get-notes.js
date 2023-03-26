@@ -1,13 +1,14 @@
-export default function makeGetStudentWords ({fetchStudentWords})
+export default function makeGetNotes ({fetchNotes})
 {
-    return async function getStudentWords(httpRequest)
+    return async function getNotes(httpRequest)
     {
         try
         {
-
-            let studentWordList = await fetchStudentWords({_id : httpRequest.query._id, startDate : httpRequest.query.startDate, endDate : httpRequest.query.endDate });
             
-            if (!studentWordList) {
+            let noteList = await fetchNotes({_id : httpRequest.query._id, startDate : httpRequest.query.startDate, endDate : httpRequest.query.endDate });
+
+            
+            if (!noteList) {
                 return {
                     headers: {
                         'Content-Type': "application/json"
@@ -22,7 +23,7 @@ export default function makeGetStudentWords ({fetchStudentWords})
                     'Content-Type': "application/json"
                 },
                 statusCode: 200,
-                body: {studentWordList}
+                body: {noteList}
             }
         }
         catch(e)
